@@ -30,7 +30,8 @@ export default async function (req, res) {
     const completion = await openai.createCompletion({
       model: 'text-davinci-003',
       prompt: generatePrompt(animal),
-      temperature: 0.6,
+      temperature: 0.13,
+      max_tokens: 4000,
     })
     res.status(200).json({ result: completion.data.choices[0].text })
   } catch (error) {
@@ -50,14 +51,8 @@ export default async function (req, res) {
 }
 
 function generatePrompt(animal) {
-  const capitalizedAnimal =
-    animal[0].toUpperCase() + animal.slice(1).toLowerCase()
-  return `Suggest three names for an animal that is a superhero.
+  return `I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with "Unknown".
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: ${capitalizedAnimal}
-Names:`
+Q: ${animal}
+A: `
 }
